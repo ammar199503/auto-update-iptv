@@ -17,6 +17,13 @@ jobs:
           - https://iptv-org.github.io/iptv/countries/in.m3u
           - https://iptv-org.github.io/iptv/countries/ae.m3u
           - https://iptv-org.github.io/iptv/countries/sa.m3u
+        playlist_name:
+          - uk
+          - us
+          - pk
+          - in
+          - ae
+          - sa
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -44,7 +51,7 @@ jobs:
       - name: Upload Working Playlist
         uses: actions/upload-artifact@v3
         with:
-          name: working_playlist_${{ matrix.playlist_url | split('/')[-1] | split('.')[0] }}
+          name: working_playlist_${{ matrix.playlist_name }}
           path: working_playlist.m3u
 
   merge-playlists:
@@ -81,7 +88,7 @@ jobs:
           GIST_ID: ${{ secrets.GIST_ID }}
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
         run: |
-          if [ -z "${GIST_ID}" ] || [ -z "${GIST_TOKEN}"; then
+          if [ -z "${GIST_ID}" ] || [ -z "${GIST_TOKEN}"]; then
             echo "Skipping Gist update: GIST_ID or GIST_TOKEN is not set."
           else
             echo "Updating Gist..."
