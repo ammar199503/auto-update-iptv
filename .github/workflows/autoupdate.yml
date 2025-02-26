@@ -42,6 +42,17 @@ jobs:
             echo "$line"
           done
 
+      - name: Validate Playlist Format
+        run: |
+          if ! grep -q "^#EXTINF" playlist.m3u; then
+            echo "Invalid playlist format: Missing #EXTINF lines"
+            exit 1
+          fi
+          if ! grep -q "^http" playlist.m3u; then
+            echo "Invalid playlist format: Missing HTTP links"
+            exit 1
+          fi
+
       - name: Run iptv-checker on the Playlist
         run: |
           set -x
