@@ -54,17 +54,20 @@ jobs:
             exit 1
           fi
 
+      - name: Create Output Directory
+        run: mkdir -p output
+
       - name: Run iptv-checker on the Playlist
         run: |
-          iptv-checker playlist.m3u
+          iptv-checker playlist.m3u -o output
           echo "Online Playlist:"
-          cat online.m3u
+          cat output/online.m3u
 
       - name: Upload Online Playlist
         uses: actions/upload-artifact@v4
         with:
           name: online_playlist_${{ matrix.playlist.name }}
-          path: online.m3u
+          path: output/online.m3u
 
   merge-playlists:
     runs-on: ubuntu-latest
