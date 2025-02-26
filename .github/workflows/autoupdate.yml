@@ -35,6 +35,13 @@ jobs:
           npm install -g iptv-checker
           export PATH=$PATH:$(npm bin -g)
      
+      - name: Debug Playlist Format
+        run: |
+          echo "Debugging Playlist Format:"
+          cat playlist.m3u | while read -r line; do
+            echo "$line"
+          done
+
       - name: Run iptv-checker on the Playlist
         run: |
           set -x
