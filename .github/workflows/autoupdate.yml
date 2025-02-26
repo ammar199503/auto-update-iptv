@@ -28,6 +28,14 @@ jobs:
           echo "Fetched playlist:"
           cat playlist.m3u
 
+      - name: Ensure Playlist Header
+        run: |
+          if ! grep -q "^#EXTM3U" playlist.m3u; then
+            sed -i '1i#EXTM3U' playlist.m3u
+          fi
+          echo "Ensured #EXTM3U header:"
+          cat playlist.m3u
+
       - name: Install Dependencies and iptv-checker via npm
         run: |
           sudo apt update
