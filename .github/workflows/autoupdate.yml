@@ -10,28 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        playlist_url:
-          - https://iptv-org.github.io/iptv/countries/uk.m3u
-          - https://iptv-org.github.io/iptv/countries/us.m3u
-          - https://iptv-org.github.io/iptv/countries/pk.m3u
-          - https://iptv-org.github.io/iptv/countries/in.m3u
-          - https://iptv-org.github.io/iptv/countries/ae.m3u
-          - https://iptv-org.github.io/iptv/countries/sa.m3u
-        playlist_name:
-          - uk
-          - us
-          - pk
-          - in
-          - ae
-          - sa
+        playlist:
+          - { url: "https://iptv-org.github.io/iptv/countries/uk.m3u", name: "uk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/us.m3u", name: "us" }
+          - { url: "https://iptv-org.github.io/iptv/countries/pk.m3u", name: "pk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/in.m3u", name: "in" }
+          - { url: "https://iptv-org.github.io/iptv/countries/ae.m3u", name: "ae" }
+          - { url: "https://iptv-org.github.io/iptv/countries/sa.m3u", name: "sa" }
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Fetch Playlist
         run: |
-          echo "Fetching ${matrix.playlist_url}"
-          curl -fsSL "${matrix.playlist_url}" | sed '/^#EXTM3U/d' > playlist.m3u
+          echo "Fetching ${{ matrix.playlist.url }}"
+          curl -fsSL "${{ matrix.playlist.url }}" | sed '/^#EXTM3U/d' > playlist.m3u
           echo "Fetched playlist:"
           cat playlist.m3u
 
@@ -44,14 +37,16 @@ jobs:
      
       - name: Run iptv-checker on the Playlist
         run: |
+          set -x
           iptv-checker playlist.m3u -o working_playlist.m3u
           echo "Working Playlist:"
           cat working_playlist.m3u
+          set +x
 
       - name: Upload Working Playlist
         uses: actions/upload-artifact@v4
         with:
-          name: working_playlist_${{ matrix.playlist_name }}
+          name: working_playlist_${{ matrix.playlist.name }}
           path: working_playlist.m3u
 
   merge-playlists:
