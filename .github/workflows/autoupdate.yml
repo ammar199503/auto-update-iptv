@@ -1,0 +1,92 @@
+name: IPTV Checker & Updater
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"  # Runs every 12 hours
+  workflow_dispatch:
+
+jobs:
+  process-playlist:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        playlist_url:
+          - https://iptv-org.github.io/iptv/countries/uk.m3u
+          - https://iptv-org.github.io/iptv/countries/us.m3u
+          - https://iptv-org.github.io/iptv/countries/pk.m3u
+          - https://iptv-org.github.io/iptv/countries/in.m3u
+          - https://iptv-org.github.io/iptv/countries/ae.m3u
+          - https://iptv-org.github.io/iptv/countries/sa.m3u
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Fetch Playlist
+        run: |
+          echo "Fetching ${matrix.playlist_url}"
+          curl -fsSL "${matrix.playlist_url}" | sed '/^#EXTM3U/d' > playlist.m3u
+          echo "Fetched playlist:"
+          cat playlist.m3u
+
+      - name: Install Dependencies and iptv-checker via npm
+        run: |
+          sudo apt update
+          sudo apt install -y nodejs npm curl jq ffmpeg
+          npm install -g iptv-checker
+          export PATH=$PATH:$(npm bin -g)
+     
+      - name: Run iptv-checker on the Playlist
+        run: |
+          iptv-checker playlist.m3u -o working_playlist.m3u
+          echo "Working Playlist:"
+          cat working_playlist.m3u
+
+      - name: Upload Working Playlist
+        uses: actions/upload-artifact@v3
+        with:
+          name: working_playlist_${{ matrix.playlist_url | split('/')[-1] | split('.')[0] }}
+          path: working_playlist.m3u
+
+  merge-playlists:
+    runs-on: ubuntu-latest
+    needs: process-playlist
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Working Playlists
+        uses: actions/download-artifact@v3
+        with:
+          path: working_playlists
+
+      - name: Merge Working Playlists
+        run: |
+          echo "#EXTM3U" > final_working_playlist.m3u
+          for file in working_playlists/*; do
+            sed '/^#EXTM3U/d' "$file" >> final_working_playlist.m3u
+          done
+          echo "Final Merged Playlist:"
+          cat final_working_playlist.m3u
+
+      - name: Commit & Push Final Merged Playlist to Repo
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "actions@github.com"
+          git add final_working_playlist.m3u
+          git commit -m "Update final working IPTV playlist $(date)" || echo "No changes to commit"
+          git push
+
+      - name: Update Gist with Final Merged Playlist (Optional)
+        env:
+          GIST_ID: ${{ secrets.GIST_ID }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+        run: |
+          if [ -z "${GIST_ID}" ] || [ -z "${GIST_TOKEN}"; then
+            echo "Skipping Gist update: GIST_ID or GIST_TOKEN is not set."
+          else
+            echo "Updating Gist..."
+            curl -X PATCH "https://api.github.com/gists/${GIST_ID}" \
+              -H "Authorization: token ${GIST_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "{\"files\": {\"final_working_playlist.m3u\": {\"content\": \"$(cat final_working_playlist.m3u | sed 's/\"/\\\"/g')\"}}}"
+          fi
