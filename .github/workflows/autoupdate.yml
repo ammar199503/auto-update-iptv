@@ -11,12 +11,12 @@ jobs:
     strategy:
       matrix:
         playlist:
-          - { url: "https://iptv-org.github.io/iptv/subdivisions/id-jt.m3u", name: "uk" }
-          - { url: "https://iptv-org.github.io/iptv/subdivisions/id-jt.m3u", name: "us" }
-          - { url: "https://iptv-org.github.io/iptv/subdivisions/id-jt.m3u", name: "pk" }
-          - { url: "https://iptv-org.github.io/iptv/subdivisions/id-jt.m3u", name: "in" }
-          - { url: "https://iptv-org.github.io/iptv/subdivisions/id-jt.m3u", name: "ae" }
-          - { url: "https://iptv-org.github.io/iptv/subdivisions/id-jt.m3u", name: "sa" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "uk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "us" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "pk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "in" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "ae" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "sa" }
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -47,6 +47,13 @@ jobs:
           sudo apt install -y nodejs npm curl jq ffmpeg
           npm install -g iptv-checker
           export PATH=$PATH:$(npm bin -g)
+
+      - name: Check if Playlist is Empty
+        run: |
+          if [ ! -s playlist.m3u ]; then
+            echo "Playlist is empty."
+            exit 0
+          fi
 
       - name: Validate Playlist Format
         run: |
@@ -89,10 +96,9 @@ jobs:
       - name: Merge Online Playlists
         run: |
           echo "#EXTM3U" > final_online_playlist.m3u
-          for file in online_playlists/*; do
-            if [ -f "$file" ]; then
-              sed '/^#EXTM3U/d' "$file" >> final_online_playlist.m3u
-            fi
+          for file in $(find online_playlists -type f); do
+            echo "Merging $file"
+            sed '/^#EXTM3U/d' "$file" >> final_online_playlist.m3u
           done
           cat <<EOL >> final_online_playlist.m3u
           #EXTINF:-1,Saudi Quran
