@@ -11,12 +11,12 @@ jobs:
     strategy:
       matrix:
         playlist:
-          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "pk" }
-          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "in" }
-          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "uk" }
-          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "us" }
-          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "ae" }
-          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "sa" }
+          - { url: "https://iptv-org.github.io/iptv/countries/pk.m3u", name: "pk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/in.m3u", name: "in" }
+          - { url: "https://iptv-org.github.io/iptv/countries/uk.m3u", name: "uk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/us.m3u", name: "us" }
+          - { url: "https://iptv-org.github.io/iptv/countries/ae.m3u", name: "ae" }
+          - { url: "https://iptv-org.github.io/iptv/countries/sa.m3u", name: "sa" }
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -111,129 +111,129 @@ jobs:
             sed '/^#EXTM3U/d' "$file" >> final_online_playlist.m3u
           done
           cat <<EOL >> final_online_playlist.m3u
-          #EXTINF:-1,Saudi Quran
+          #EXTINF:-1, group-title="Pakistan" Saudi Quran
           http://webtv.dodear.asia:88/saudiquransd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Saudi Sunnah
+          #EXTINF:-1, group-title="Pakistan" Saudi Sunnah
           http://webtv.dodear.asia:88/saudisunnahsd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Ary QTV
+          #EXTINF:-1, group-title="Pakistan" Ary QTV
           http://webtv.dodear.asia:88/aryqtvsd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Madni TV
+          #EXTINF:-1, group-title="Pakistan" Madni TV
           http://webtv.dodear.asia:88/madnitvsd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Animal Planet
+          #EXTINF:-1, group-title="Pakistan" Animal Planet
           http://webtv.dodear.asia:88/skyanimalplanetddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,National Geographic
+          #EXTINF:-1, group-title="Pakistan" National Geographic
           http://webtv.dodear.asia:88/skynatgeo/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Action Movies
+          #EXTINF:-1, group-title="Pakistan" Action Movies
           http://webtv.dodear.asia:88/osnmovieaction/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Sky Cinema
+          #EXTINF:-1, group-title="Pakistan" Sky Cinema
           http://webtv.dodear.asia:88/skycinemapremier/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,OSN movies
+          #EXTINF:-1, group-title="Pakistan" OSN movies
           http://webtv.dodear.asia:88/osnmovies/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,OSN Series
+          #EXTINF:-1, group-title="Pakistan" OSN Series
           http://webtv.dodear.asia:88/osnseries/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Sky Cinema Sci-fi
+          #EXTINF:-1, group-title="Pakistan" Sky Cinema Sci-fi
           http://webtv.dodear.asia:88/skycinemascifi/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,8xm
+          #EXTINF:-1, group-title="Pakistan" 8xm
           http://webtv.dodear.asia:88/8xmsd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Jalwa Music
+          #EXTINF:-1, group-title="Pakistan" Jalwa Music
           http://webtv.dodear.asia:88/jalwamusicsd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,A Plus
+          #EXTINF:-1, group-title="Pakistan" A Plus
           http://webtv.dodear.asia:88/aplushd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Aan TV
+          #EXTINF:-1, group-title="Pakistan" Aan TV
           http://webtv.dodear.asia:88/aantvhd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,A TV
+          #EXTINF:-1, group-title="Pakistan" A TV
           http://webtv.dodear.asia:88/atvhd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Aur Life
+          #EXTINF:-1, group-title="Pakistan" Aur Life
           http://webtv.dodear.asia:88/aurlifehdddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Aaj TV
+          #EXTINF:-1, group-title="Pakistan" Aaj TV
           http://webtv.dodear.asia:88/aajtvsd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Apna TV
+          #EXTINF:-1, group-title="Pakistan" Apna TV
           http://webtv.dodear.asia:88/apnatv/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Ary Digital
+          #EXTINF:-1, group-title="Pakistan" Ary Digital
           http://webtv.dodear.asia:88/arydigitalhd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Geo TV
+          #EXTINF:-1, group-title="Pakistan" Geo TV
           http://webtv.dodear.asia:88/geotvhdddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Hum TV
+          #EXTINF:-1, group-title="Pakistan" Hum TV
           http://webtv.dodear.asia:88/humtvsdddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,24 News
+          #EXTINF:-1, group-title="Pakistan" 24 News
           http://webtv.dodear.asia:88/24newshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,7 News
+          #EXTINF:-1, group-title="Pakistan" 7 News
           http://webtv.dodear.asia:88/7newshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,92 News
+          #EXTINF:-1, group-title="Pakistan" 92 News
           http://webtv.dodear.asia:88/92newshdddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Abn News
+          #EXTINF:-1, group-title="Pakistan" Abn News
           http://webtv.dodear.asia:88/abnnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Aaj News
+          #EXTINF:-1, group-title="Pakistan" Aaj News
           http://webtv.dodear.asia:88/aajnewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Abbtak News
+          #EXTINF:-1, group-title="Pakistan" Abbtak News
           http://webtv.dodear.asia:88/abbtaknewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Ary News
+          #EXTINF:-1, group-title="Pakistan" Ary News
           http://webtv.dodear.asia:88/arynewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Bol News
+          #EXTINF:-1, group-title="Pakistan" Bol News
           http://webtv.dodear.asia:88/bolnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Channel Five
+          #EXTINF:-1, group-title="Pakistan" Channel Five
           http://webtv.dodear.asia:88/channelfive/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Dawn News
+          #EXTINF:-1, group-title="Pakistan" Dawn News
           http://webtv.dodear.asia:88/dawnnewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Dunya News
+          #EXTINF:-1, group-title="Pakistan" Dunya News
           http://webtv.dodear.asia:88/dunyanewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Express News
+          #EXTINF:-1, group-title="Pakistan" Express News
           http://webtv.dodear.asia:88/expressnewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Geo News
+          #EXTINF:-1, group-title="Pakistan" Geo News
           http://webtv.dodear.asia:88/geonewshdddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Hum News
+          #EXTINF:-1, group-title="Pakistan" Hum News
           http://webtv.dodear.asia:88/humnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Ktn News
+          #EXTINF:-1, group-title="Pakistan" Ktn News
           http://webtv.dodear.asia:88/ktnnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Khyber News
+          #EXTINF:-1, group-title="Pakistan" Khyber News
           http://webtv.dodear.asia:88/khybernewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Lahore news
+          #EXTINF:-1, group-title="Pakistan" Lahore news
           http://webtv.dodear.asia:88/lahorenewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Neo News
+          #EXTINF:-1, group-title="Pakistan" Neo News
           http://webtv.dodear.asia:88/neonewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Pnn News
+          #EXTINF:-1, group-title="Pakistan" Pnn News
           http://webtv.dodear.asia:88/pnnnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Sindh News
+          #EXTINF:-1, group-title="Pakistan" Sindh News
           http://webtv.dodear.asia:88/sindhnewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Talon News
+          #EXTINF:-1, group-title="Pakistan" Talon News
           http://webtv.dodear.asia:88/talonnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Vsh News
+          #EXTINF:-1, group-title="Pakistan" Vsh News
           http://webtv.dodear.asia:88/vshnewssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Ptv News
+          #EXTINF:-1, group-title="Pakistan" Ptv News
           http://webtv.dodear.asia:88/ptvnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Play TV
+          #EXTINF:-1, group-title="Pakistan" Play TV
           http://webtv.dodear.asia:88/playtvsd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Public News
+          #EXTINF:-1, group-title="Pakistan" Public News
           http://webtv.dodear.asia:88/publicnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Such News
+          #EXTINF:-1, group-title="Pakistan" Such News
           http://webtv.dodear.asia:88/suchnewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Samaa News
+          #EXTINF:-1, group-title="Pakistan" Samaa News
           http://webtv.dodear.asia:88/samaanewssdddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Suno News
+          #EXTINF:-1, group-title="Pakistan" Suno News
           http://webtv.dodear.asia:88/sunonewshd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,A Sports
+          #EXTINF:-1, group-title="Pakistan" A Sports
           http://webtv.dodear.asia:88/asportssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Astro Cric
+          #EXTINF:-1, group-title="Pakistan" Astro Cric
           http://webtv.dodear.asia:88/astrocrichd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Ptv Sports
+          #EXTINF:-1, group-title="Pakistan" Ptv Sports
           http://webtv.dodear.asia:88/ptvsportssd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Super Sports EPL
+          #EXTINF:-1, group-title="Pakistan" Super Sports EPL
           http://webtv.dodear.asia:88/supersportseplhd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Starz Play Cric
+          #EXTINF:-1, group-title="Pakistan" Starz Play Cric
           http://webtv.dodear.asia:88/starzplaycric/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Sky Sports Cric
+          #EXTINF:-1, group-title="Pakistan" Sky Sports Cric
           http://webtv.dodear.asia:88/skysportscrichd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Sky Sports EPL
+          #EXTINF:-1, group-title="Pakistan" Sky Sports EPL
           http://webtv.dodear.asia:88/skysportseplhd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Sky Main Event
+          #EXTINF:-1, group-title="Pakistan" Sky Main Event
           http://webtv.dodear.asia:88/skyspmainevent/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Willow Cricket Xtra
+          #EXTINF:-1, group-title="Pakistan" Willow Cricket Xtra
           http://webtv.dodear.asia:88/willowcricketxtra/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Ten Sports
+          #EXTINF:-1, group-title="Pakistan" Ten Sports
           http://webtv.dodear.asia:88/tensportssdddr/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Willow Cric
+          #EXTINF:-1, group-title="Pakistan" Willow Cric
           http://webtv.dodear.asia:88/willowcrichd/tracks-v1a1/mono.m3u8
-          #EXTINF:-1,Sky Sports WWE
+          #EXTINF:-1, group-title="Pakistan" Sky Sports WWE
           http://webtv.dodear.asia:88/skysportswwe/tracks-v1a1/mono.m3u8
           EOL
           echo "Final Merged Online Playlist:"
