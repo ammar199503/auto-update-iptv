@@ -256,8 +256,10 @@ jobs:
             echo "Skipping Gist update: GIST_ID or GIST_TOKEN is not set."
           else
             echo "Updating Gist..."
+            payload=$(jq -n --arg content "$(cat final_online_playlist.m3u)" '{"files": {"final_online_playlist.m3u": {"content": $content}}}')
+            echo "$payload" > payload.json
             curl -X PATCH "https://api.github.com/gists/${GIST_ID}" \
               -H "Authorization: token ${GIST_TOKEN}" \
               -H "Content-Type: application/json" \
-              -d "{\"files\": {\"final_online_playlist.m3u\": {\"content\": \"$(cat final_online_playlist.m3u | sed 's/\"/\\\"/g')\"}}}"
+              -d @payload.json
           fi
