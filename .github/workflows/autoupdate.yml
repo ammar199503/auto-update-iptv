@@ -39,7 +39,60 @@ jobs:
       - name: Append Additional Links to PK Playlist
         if: matrix.playlist.name == 'pk'
         run: |
-          cat <<EOL >> playlist.m3u
+          echo "No additional links to append for PK playlist."
+
+      - name: Install Dependencies and iptv-checker via npm
+        run: |
+          sudo apt update
+          sudo apt install -y nodejs npm curl jq ffmpeg
+          npm install -g iptv-checker
+          export PATH=$PATH:$(npm bin -g)
+
+      - name: Validate Playlist Format
+        run: |
+          if ! grep -q "^#EXTINF" playlist.m3u; then
+            echo "Invalid playlist format: Missing #EXTINF lines"
+            exit 1
+          fi
+          if ! grep -q "^http" playlist.m3u; then
+            echo "Invalid playlist format: Missing HTTP links"
+            exit 1
+          fi
+
+      - name: Create Output Directory
+        run: mkdir -p output
+
+      - name: Run iptv-checker on the Playlist
+        run: |
+          iptv-checker playlist.m3u -o output
+          echo "Online Playlist:"
+          cat output/online.m3u
+
+      - name: Upload Online Playlist
+        uses: actions/upload-artifact@v4
+        with:
+          name: online_playlist_${{ matrix.playlist.name }}
+          path: output/online.m3u
+
+  merge-playlists:
+    runs-on: ubuntu-latest
+    needs: process-playlist
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Online Playlists
+        uses: actions/download-artifact@v4
+        with:
+          path: online_playlists
+
+      - name: Merge Online Playlists
+        run: |
+          echo "#EXTM3U" > final_online_playlist.m3u
+          for file in online_playlists/*; do
+            sed '/^#EXTM3U/d' "$file" >> final_online_playlist.m3u
+          done
+          cat <<EOL >> final_online_playlist.m3u
           #EXTINF:-1,Saudi Quran
           http://webtv.dodear.asia:88/saudiquransd/tracks-v1a1/mono.m3u8
           #EXTINF:-1,Saudi Sunnah
@@ -165,60 +218,6 @@ jobs:
           #EXTINF:-1,Sky Sports WWE
           http://webtv.dodear.asia:88/skysportswwe/tracks-v1a1/mono.m3u8
           EOL
-          echo "Appended additional links to PK playlist:"
-          cat playlist.m3u
-
-      - name: Install Dependencies and iptv-checker via npm
-        run: |
-          sudo apt update
-          sudo apt install -y nodejs npm curl jq ffmpeg
-          npm install -g iptv-checker
-          export PATH=$PATH:$(npm bin -g)
-
-      - name: Validate Playlist Format
-        run: |
-          if ! grep -q "^#EXTINF" playlist.m3u; then
-            echo "Invalid playlist format: Missing #EXTINF lines"
-            exit 1
-          fi
-          if ! grep -q "^http" playlist.m3u; then
-            echo "Invalid playlist format: Missing HTTP links"
-            exit 1
-          fi
-
-      - name: Create Output Directory
-        run: mkdir -p output
-
-      - name: Run iptv-checker on the Playlist
-        run: |
-          iptv-checker playlist.m3u -o output
-          echo "Online Playlist:"
-          cat output/online.m3u
-
-      - name: Upload Online Playlist
-        uses: actions/upload-artifact@v4
-        with:
-          name: online_playlist_${{ matrix.playlist.name }}
-          path: output/online.m3u
-
-  merge-playlists:
-    runs-on: ubuntu-latest
-    needs: process-playlist
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Download Online Playlists
-        uses: actions/download-artifact@v4
-        with:
-          path: online_playlists
-
-      - name: Merge Online Playlists
-        run: |
-          echo "#EXTM3U" > final_online_playlist.m3u
-          for file in online_playlists/*; do
-            sed '/^#EXTM3U/d' "$file" >> final_online_playlist.m3u
-          done
           echo "Final Merged Online Playlist:"
           cat final_online_playlist.m3u
 
