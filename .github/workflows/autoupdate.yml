@@ -11,12 +11,12 @@ jobs:
     strategy:
       matrix:
         playlist:
-          - { url: "https://iptv-org.github.io/iptv/countries/gg.m3u", name: "uk" }
-          - { url: "https://iptv-org.github.io/iptv/countries/gg.m3u", name: "us" }
-          - { url: "https://iptv-org.github.io/iptv/countries/gg.m3u", name: "pk" }
-          - { url: "https://iptv-org.github.io/iptv/countries/gg.m3u", name: "in" }
-          - { url: "https://iptv-org.github.io/iptv/countries/gg.m3u", name: "ae" }
-          - { url: "https://iptv-org.github.io/iptv/countries/gg.m3u", name: "sa" }
+          - { url: "https://iptv-org.github.io/iptv/countries/id-jt.m3u", name: "uk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/id-jt.m3u", name: "us" }
+          - { url: "https://iptv-org.github.io/iptv/countries/id-jt.m3u", name: "pk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/id-jt.m3u", name: "in" }
+          - { url: "https://iptv-org.github.io/iptv/countries/id-jt.m3u", name: "ae" }
+          - { url: "https://iptv-org.github.io/iptv/countries/id-jt.m3u", name: "sa" }
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
