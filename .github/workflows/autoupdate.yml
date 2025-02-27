@@ -11,12 +11,12 @@ jobs:
     strategy:
       matrix:
         playlist:
-          - { url: "https://iptv-org.github.io/iptv/countries/pk.m3u", name: "pk" }
-          - { url: "https://iptv-org.github.io/iptv/countries/in.m3u", name: "in" }
-          - { url: "https://iptv-org.github.io/iptv/countries/uk.m3u", name: "uk" }
-          - { url: "https://iptv-org.github.io/iptv/countries/us.m3u", name: "us" }
-          - { url: "https://iptv-org.github.io/iptv/countries/ae.m3u", name: "ae" }
-          - { url: "https://iptv-org.github.io/iptv/countries/sa.m3u", name: "sa" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "pk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "in" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "uk" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "us" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "ae" }
+          - { url: "https://iptv-org.github.io/iptv/countries/as.m3u", name: "sa" }
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -28,6 +28,21 @@ jobs:
           echo "Fetched playlist:"
           cat playlist.m3u
 
+      - name: Update Group Title in Playlist
+        run: |
+          case "${{ matrix.playlist.name }}" in
+            pk) group="Pakistan" ;;
+            in) group="India" ;;
+            uk) group="UK" ;;
+            us) group="US" ;;
+            ae) group="UAE" ;;
+            sa) group="Saudi" ;;
+            *) group="Unknown" ;;
+          esac
+          sed -i "s/group-title=\"[^\"]*\"/group-title=\"$group\"/g" playlist.m3u
+          echo "Updated playlist with group-title=\"$group\":"
+          cat playlist.m3u
+
       - name: Ensure Playlist Header
         run: |
           if ! grep -q "^#EXTM3U" playlist.m3u; then
@@ -35,11 +50,6 @@ jobs:
           fi
           echo "Ensured #EXTM3U header:"
           cat playlist.m3u
-
-      - name: Append Additional Links to PK Playlist
-        if: matrix.playlist.name == 'pk'
-        run: |
-          echo "No additional links to append for PK playlist."
 
       - name: Install Dependencies and iptv-checker via npm
         run: |
