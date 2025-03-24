@@ -246,20 +246,5 @@ jobs:
           git add final_online_playlist.m3u
           git commit -m "Update final online IPTV playlist $(date)" || echo "No changes to commit"
           git push
-
-      - name: Update Gist with Final Merged Online Playlist (Optional)
-        env:
-          GIST_ID: ${{ secrets.GIST_ID }}
-          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
-        run: |
-          if [ -z "${GIST_ID}" ] || [ -z "${GIST_TOKEN}" ]; then
-            echo "Skipping Gist update: GIST_ID or GIST_TOKEN is not set."
-          else
-            echo "Updating Gist..."
-            payload=$(jq -n --arg content "$(cat final_online_playlist.m3u)" '{"files": {"final_online_playlist.m3u": {"content": $content}}}')
-            echo "$payload" > payload.json
-            curl -X PATCH "https://api.github.com/gists/${GIST_ID}" \
-              -H "Authorization: token ${GIST_TOKEN}" \
-              -H "Content-Type: application/json" \
-              -d @payload.json
+    
           fi
